@@ -6,36 +6,45 @@
 <title>StudyDesk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1117;
-  --bg-card:#1a1d27;
-  --bg-card-alt:#1f2335;
-  --accent:#4a9b6f;
-  --accent-light:#5ab882;
-  --accent-dim:rgba(74,155,111,0.12);
-  --text:#e8eaf6;
-  --text-2:#8892a4;
-  --border:#252836;
-  --sw:240px;
-  --red:#e05252;
-  --amber:#e0a552;
-  --gcse:#4a90d9;
-  --igcse:#9b6fd4;
-  --alevel:#e07a4a;
-  --sats:#e05252;
-  --other:#7a8a9a;
-  --radius:12px;
+  --bg:#080a0e;
+  --bg-card:#0e1118;
+  --bg-card-alt:#131720;
+  --bg-hover:#161b26;
+  --accent:#e8e3d5;
+  --accent-muted:rgba(232,227,213,0.06);
+  --accent-line:rgba(232,227,213,0.12);
+  --text:#f0ece2;
+  --text-2:#6b7280;
+  --text-3:#404550;
+  --border:rgba(255,255,255,0.055);
+  --border-hover:rgba(255,255,255,0.11);
+  --sw:220px;
+  --red:#ff6b6b;
+  --amber:#f59e0b;
+  --green:#34d399;
+  --blue:#60a5fa;
+  --purple:#a78bfa;
+  --radius:10px;
+  --radius-sm:6px;
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+
+/* ── Noise overlay ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--text-3);border-radius:2px}
 
 /* ── Sidebar ── */
 .sidebar{
@@ -44,266 +53,381 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   position:fixed;left:0;top:0;z-index:100;
-  transition:transform .3s ease;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
 }
-.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border)}
-.sidebar-logo h1{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;line-height:1}
-.sidebar-logo h1 span{color:var(--accent)}
-.sidebar-logo .tagline{font-size:.68rem;color:var(--text-2);margin-top:4px;letter-spacing:.05em}
-.nav{flex:1;padding:12px 0}
+.sidebar-logo{padding:28px 22px 22px;border-bottom:1px solid var(--border)}
+.sidebar-logo h1{
+  font-family:'DM Serif Display',serif;
+  font-size:1.45rem;font-weight:400;line-height:1;
+  letter-spacing:-.01em;color:var(--text);
+}
+.sidebar-logo h1 em{font-style:italic;color:var(--text-2)}
+.sidebar-logo .tagline{font-size:.68rem;color:var(--text-3);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+.nav{flex:1;padding:16px 0}
+.nav-section{padding:0 22px;margin-bottom:6px;margin-top:14px;font-size:.6rem;color:var(--text-3);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.nav-section:first-child{margin-top:0}
 .nav-item{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 20px;cursor:pointer;
-  color:var(--text-2);font-size:.875rem;font-weight:500;
-  transition:all .2s;border-left:3px solid transparent;
+  display:flex;align-items:center;gap:10px;
+  padding:9px 22px;cursor:pointer;
+  color:var(--text-2);font-size:.82rem;font-weight:500;
+  transition:all .18s ease;position:relative;
   user-select:none;
 }
-.nav-item:hover{color:var(--text);background:var(--bg-card-alt)}
-.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim)}
-.nav-icon{width:20px;text-align:center;font-size:1rem;flex-shrink:0}
-.sidebar-footer{padding:14px 20px;border-top:1px solid var(--border);font-size:.68rem;color:var(--text-2);text-align:center}
+.nav-item::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:2px;height:0;background:var(--accent);border-radius:0 2px 2px 0;
+  transition:height .2s ease;
+}
+.nav-item:hover{color:var(--text);background:var(--accent-muted)}
+.nav-item.active{color:var(--text)}
+.nav-item.active::before{height:20px}
+.nav-item.active{background:var(--accent-muted)}
+.nav-icon{width:16px;text-align:center;font-size:.85rem;flex-shrink:0;opacity:.7}
+.nav-item.active .nav-icon{opacity:1}
+.sidebar-footer{padding:14px 22px;border-top:1px solid var(--border);font-size:.65rem;color:var(--text-3)}
 
 /* ── Main ── */
-.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
 .topbar{
   display:none;align-items:center;
   padding:14px 20px;
   background:var(--bg-card);border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:50;
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
 }
-.hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
-.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
-.topbar-title{margin-left:14px;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600}
-.content{flex:1;padding:32px;max-width:1120px;width:100%}
+.hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:4px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text-2);border-radius:2px;transition:all .2s}
+.topbar-title{margin-left:14px;font-family:'DM Serif Display',serif;font-size:1.15rem}
+.content{flex:1;padding:36px 40px;max-width:1100px;width:100%}
 .section{display:none}
-.section.active{display:block;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.section.active{display:block}
+
+/* ── Page enter animation ── */
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.section.active > *{
+  animation:pageIn .32s cubic-bezier(.4,0,.2,1) both;
+}
+.section.active > *:nth-child(1){animation-delay:.03s}
+.section.active > *:nth-child(2){animation-delay:.07s}
+.section.active > *:nth-child(3){animation-delay:.11s}
+.section.active > *:nth-child(4){animation-delay:.15s}
+.section.active > *:nth-child(5){animation-delay:.19s}
 
 /* ── Typography ── */
-.sec-heading{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:600;margin-bottom:24px}
-.sub-label{font-size:.7rem;color:var(--text-2);font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.sec-heading{
+  font-family:'DM Serif Display',serif;
+  font-size:1.9rem;font-weight:400;margin-bottom:28px;
+  letter-spacing:-.02em;line-height:1.1;
+}
+.sec-heading em{font-style:italic;color:var(--text-2)}
+.sub-label{font-size:.62rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
 
 /* ── Cards ── */
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .2s}
-.card:hover{border-color:rgba(74,155,111,.25)}
+.card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;
+  transition:border-color .2s ease;
+}
+.card:hover{border-color:var(--border-hover)}
 
 /* ── Stat grid ── */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
 .stat-card{
   background:var(--bg-card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px;
-  display:flex;flex-direction:column;gap:6px;
-  transition:all .2s;cursor:default;
+  border-radius:var(--radius);padding:20px 22px;
+  display:flex;flex-direction:column;gap:4px;
+  transition:all .22s cubic-bezier(.4,0,.2,1);cursor:default;
+  position:relative;overflow:hidden;
 }
-.stat-card:hover{border-color:rgba(74,155,111,.35);transform:translateY(-2px)}
-.stat-icon{font-size:1.4rem}
-.stat-value{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;line-height:1;color:var(--text)}
-.stat-label{font-size:.72rem;color:var(--text-2);font-weight:500}
+.stat-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.02) 0%,transparent 60%);
+  pointer-events:none;
+}
+.stat-card:hover{border-color:var(--border-hover);transform:translateY(-2px);background:var(--bg-card-alt)}
+.stat-icon{font-size:1.1rem;margin-bottom:8px;opacity:.5}
+.stat-value{
+  font-family:'DM Serif Display',serif;
+  font-size:2.4rem;font-weight:400;line-height:1;color:var(--text);
+  letter-spacing:-.03em;
+}
+.stat-label{font-size:.7rem;color:var(--text-2);font-weight:500;margin-top:2px}
 
 /* ── Hero ── */
 .hero{
-  background:linear-gradient(135deg,#1a2d24 0%,#1a1d27 55%,#1d1a2d 100%);
-  border:1px solid rgba(74,155,111,.25);
-  border-radius:16px;padding:28px 32px;margin-bottom:28px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;padding:30px 34px;margin-bottom:28px;
   position:relative;overflow:hidden;
 }
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent)}
-.hero-greeting{font-size:.82rem;color:var(--text-2);margin-bottom:4px}
-.hero-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;margin-bottom:14px}
+.hero::after{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(232,227,213,.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-greeting{font-size:.72rem;color:var(--text-3);margin-bottom:3px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.hero-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.3rem;font-weight:400;margin-bottom:18px;
+  letter-spacing:-.01em;
+}
 .hero-body{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.hero-name{font-size:1.1rem;font-weight:600;margin-bottom:4px}
-.hero-detail{font-size:.78rem;color:var(--text-2);margin-top:2px}
-.hero-cd{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;line-height:1}
-.hero-cd-label{font-size:.68rem;color:var(--text-2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-.hero-empty{color:var(--text-2);font-size:.9rem;padding:4px 0}
+.hero-name{font-size:1rem;font-weight:600;margin-bottom:3px}
+.hero-detail{font-size:.75rem;color:var(--text-2);margin-top:3px}
+.hero-cd{
+  font-family:'DM Serif Display',serif;
+  font-size:2.6rem;font-weight:400;line-height:1;
+  letter-spacing:-.03em;
+}
+.hero-cd-label{font-size:.62rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
+.hero-empty{color:var(--text-2);font-size:.875rem;padding:2px 0}
 
 /* ── Dashboard bottom ── */
-.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.mini-list{list-style:none;display:flex;flex-direction:column;gap:6px}
-.mini-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;background:var(--bg-card-alt);border-radius:8px;font-size:.8rem}
+.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mini-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.mini-item{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 13px;background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);font-size:.8rem;
+  transition:border-color .15s;
+}
+.mini-item:hover{border-color:var(--border-hover)}
 .mini-left{display:flex;flex-direction:column;gap:2px;min-width:0}
-.mini-name{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-sub{color:var(--text-2);font-size:.68rem}
-.mini-badge{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
-.mini-empty{color:var(--text-2);font-size:.8rem;padding:6px 2px}
+.mini-name{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.8rem}
+.mini-sub{color:var(--text-2);font-size:.66rem}
+.mini-badge{font-size:.63rem;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.mini-empty{color:var(--text-3);font-size:.78rem;padding:6px 2px}
 
 /* ── Forms ── */
-.form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:22px}
-.form-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;margin-bottom:14px}
-.frow{display:grid;gap:12px;margin-bottom:12px}
+.form-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;margin-bottom:22px;
+}
+.form-title{
+  font-family:'DM Serif Display',serif;
+  font-size:.95rem;font-weight:400;margin-bottom:16px;color:var(--text-2);
+}
+.frow{display:grid;gap:12px;margin-bottom:14px}
 .f2{grid-template-columns:1fr 1fr}
 .f3{grid-template-columns:1fr 1fr 1fr}
 .f4{grid-template-columns:1fr 1fr 1fr 1fr}
-.fgroup{display:flex;flex-direction:column;gap:5px}
-label{font-size:.68rem;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em}
+.fgroup{display:flex;flex-direction:column;gap:6px}
+label{font-size:.62rem;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em}
 input,select{
   background:var(--bg);border:1px solid var(--border);color:var(--text);
-  border-radius:8px;padding:10px 12px;
-  font-family:'Inter',sans-serif;font-size:.875rem;
-  outline:none;transition:border-color .2s;width:100%;
+  border-radius:var(--radius-sm);padding:10px 13px;
+  font-family:'DM Sans',sans-serif;font-size:.84rem;
+  outline:none;transition:border-color .18s,background .18s;width:100%;
 }
-input:focus,select:focus{border-color:var(--accent)}
-input::placeholder{color:var(--text-2);opacity:.6}
+input:focus,select:focus{border-color:rgba(232,227,213,.25);background:var(--bg-card-alt)}
+input::placeholder{color:var(--text-3);opacity:1}
 select option{background:var(--bg-card)}
-input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:pointer}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.4);cursor:pointer}
 .btn{
-  background:var(--accent);color:#fff;border:none;
-  border-radius:8px;padding:10px 22px;
-  font-family:'Inter',sans-serif;font-size:.875rem;font-weight:600;
-  cursor:pointer;transition:all .2s;
+  background:var(--text);color:var(--bg);border:none;
+  border-radius:var(--radius-sm);padding:10px 22px;
+  font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;
+  cursor:pointer;transition:all .18s cubic-bezier(.4,0,.2,1);
+  letter-spacing:.02em;
 }
-.btn:hover{background:var(--accent-light);transform:translateY(-1px)}
+.btn:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 4px 20px rgba(232,227,213,.12)}
 .btn:active{transform:translateY(0)}
 
 /* ── Exam cards ── */
-.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .exam-card{
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:var(--radius);overflow:hidden;
-  position:relative;transition:all .2s;
+  position:relative;transition:all .22s cubic-bezier(.4,0,.2,1);
 }
-.exam-card:hover{border-color:rgba(74,155,111,.3);transform:translateY(-2px)}
+.exam-card:hover{border-color:var(--border-hover);transform:translateY(-3px);background:var(--bg-card-alt)}
 .exam-card:hover .del-btn{opacity:1}
-.exam-stripe{height:4px}
-.exam-body{padding:16px}
+.exam-stripe{height:2px;opacity:.7}
+.exam-body{padding:18px}
 .qual-badge{
-  font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-  padding:3px 8px;border-radius:999px;display:inline-block;margin-bottom:8px;
+  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:10px;
 }
-.exam-subject{font-size:1rem;font-weight:600;margin-bottom:3px}
-.exam-board{font-size:.72rem;color:var(--text-2);min-height:1rem;margin-bottom:10px}
-.exam-date-str{font-size:.72rem;color:var(--text-2);margin-bottom:8px}
-.exam-cd{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;line-height:1}
-.exam-cd.green{color:var(--accent)}
+.exam-subject{font-size:.95rem;font-weight:600;margin-bottom:3px}
+.exam-board{font-size:.7rem;color:var(--text-2);min-height:.9rem;margin-bottom:10px}
+.exam-date-str{font-size:.68rem;color:var(--text-3);margin-bottom:12px;letter-spacing:.03em}
+.exam-cd{
+  font-family:'DM Serif Display',serif;
+  font-size:1.6rem;font-weight:400;line-height:1;letter-spacing:-.02em;
+}
+.exam-cd.green{color:var(--green)}
 .exam-cd.amber{color:var(--amber)}
 .exam-cd.red{color:var(--red)}
-.exam-cd-label{font-size:.65rem;color:var(--text-2);margin-top:3px}
+.exam-cd-label{font-size:.6rem;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
 
 /* ── Delete button ── */
 .del-btn{
-  position:absolute;top:10px;right:10px;
-  background:rgba(224,82,82,.1);border:1px solid rgba(224,82,82,.25);
-  color:var(--red);border-radius:6px;padding:3px 8px;
-  font-size:.68rem;font-weight:600;cursor:pointer;
-  opacity:0;transition:all .2s;font-family:'Inter',sans-serif;
+  position:absolute;top:12px;right:12px;
+  background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.18);
+  color:var(--red);border-radius:5px;padding:3px 9px;
+  font-size:.65rem;font-weight:600;cursor:pointer;
+  opacity:0;transition:all .18s;font-family:'DM Sans',sans-serif;
 }
-.del-btn:hover{background:rgba(224,82,82,.2)}
+.del-btn:hover{background:rgba(255,107,107,.18)}
 
 /* ── Tasks ── */
-.chips{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.chips{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
 .chip{
   padding:6px 14px;border-radius:999px;
-  font-size:.72rem;font-weight:600;cursor:pointer;
-  border:1px solid var(--border);color:var(--text-2);
-  background:var(--bg-card);transition:all .2s;user-select:none;
+  font-size:.7rem;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);color:var(--text-3);
+  background:transparent;transition:all .18s;user-select:none;
+  letter-spacing:.03em;
 }
-.chip:hover{border-color:var(--accent);color:var(--accent)}
-.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:hover{border-color:var(--border-hover);color:var(--text-2)}
+.chip.active{background:var(--text);border-color:var(--text);color:var(--bg)}
 
-.task-list{display:flex;flex-direction:column;gap:8px}
+.task-list{display:flex;flex-direction:column;gap:7px}
 .task-item{
-  display:flex;align-items:center;gap:12px;
+  display:flex;align-items:center;gap:13px;
   padding:13px 16px;background:var(--bg-card);
-  border:1px solid var(--border);border-radius:10px;
-  transition:all .2s;position:relative;
+  border:1px solid var(--border);border-radius:var(--radius);
+  transition:all .18s ease;position:relative;
 }
-.task-item:hover{border-color:rgba(74,155,111,.3)}
-.task-item.done{opacity:.4}
-.task-item.done .task-name{text-decoration:line-through}
+.task-item:hover{border-color:var(--border-hover);background:var(--bg-card-alt)}
+.task-item.done{opacity:.35}
+.task-item.done .task-name{text-decoration:line-through;text-decoration-color:var(--text-3)}
 .task-item:hover .task-del{opacity:1}
+
+/* ── Checkbox ── */
 .task-chk{
-  width:18px;height:18px;border-radius:50%;
-  border:2px solid var(--border);cursor:pointer;
+  width:16px;height:16px;border-radius:50%;
+  border:1.5px solid var(--text-3);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .2s;
+  flex-shrink:0;transition:all .18s;
 }
-.task-chk.on{background:var(--accent);border-color:var(--accent)}
-.task-chk.on::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
+.task-chk:hover{border-color:var(--text-2)}
+.task-chk.on{background:var(--text);border-color:var(--text)}
+.task-chk.on::after{content:'✓';font-size:9px;color:var(--bg);font-weight:700}
+
 .task-content{flex:1;min-width:0}
-.task-name{font-size:.875rem;font-weight:500;margin-bottom:5px}
-.task-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.task-subj{font-size:.68rem;color:var(--text-2);background:var(--bg-card-alt);padding:2px 8px;border-radius:999px}
-.task-due{font-size:.68rem;color:var(--text-2)}
+.task-name{font-size:.845rem;font-weight:500;margin-bottom:5px}
+.task-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.task-subj{font-size:.66rem;color:var(--text-2);background:var(--bg-card-alt);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
+.task-due{font-size:.66rem;color:var(--text-3)}
 .task-due.overdue{color:var(--red)}
 .pri-badge{
-  font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-  padding:2px 8px;border-radius:999px;cursor:pointer;
-  transition:transform .15s;user-select:none;
+  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+  padding:2px 8px;border-radius:4px;cursor:pointer;
+  transition:transform .12s;user-select:none;
 }
-.pri-badge:hover{transform:scale(1.08)}
-.pri-badge.High{background:rgba(224,82,82,.15);color:var(--red);border:1px solid rgba(224,82,82,.25)}
-.pri-badge.Medium{background:rgba(224,165,82,.15);color:var(--amber);border:1px solid rgba(224,165,82,.25)}
-.pri-badge.Low{background:rgba(74,155,111,.15);color:var(--accent);border:1px solid rgba(74,155,111,.25)}
+.pri-badge:hover{transform:scale(1.06)}
+.pri-badge.High{background:rgba(255,107,107,.1);color:var(--red);border:1px solid rgba(255,107,107,.2)}
+.pri-badge.Medium{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.pri-badge.Low{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.2)}
 .task-del{
-  background:none;border:none;color:var(--text-2);
+  background:none;border:none;color:var(--text-3);
   cursor:pointer;padding:4px 6px;border-radius:4px;
-  font-size:.9rem;opacity:0;transition:all .2s;
+  font-size:.85rem;opacity:0;transition:all .18s;
 }
 .task-del:hover{color:var(--red)}
 
 /* ── Grade tracker ── */
-.tabs{display:flex;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:22px;gap:4px}
+.tabs{
+  display:flex;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:3px;margin-bottom:22px;gap:3px;
+}
 .tab-btn{
   flex:1;padding:8px 12px;background:none;border:none;
-  border-radius:8px;color:var(--text-2);
-  font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;
-  cursor:pointer;transition:all .2s;white-space:nowrap;
+  border-radius:5px;color:var(--text-3);
+  font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:600;
+  cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.04em;
 }
-.tab-btn.active{background:var(--accent);color:#fff}
-.grade-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
-.sum-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
-.sum-val{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--accent);line-height:1}
-.sum-label{font-size:.68rem;color:var(--text-2);margin-top:5px}
-.tbl-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto}
+.tab-btn.active{background:var(--text);color:var(--bg)}
+
+.grade-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.sum-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;text-align:center;
+}
+.sum-val{
+  font-family:'DM Serif Display',serif;
+  font-size:1.8rem;font-weight:400;color:var(--text);line-height:1;
+  letter-spacing:-.02em;
+}
+.sum-label{font-size:.65rem;color:var(--text-3);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+
+.tbl-wrap{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;overflow-x:auto;
+}
 .grade-tbl{width:100%;border-collapse:collapse;min-width:500px}
 .grade-tbl th{
-  text-align:left;padding:10px 14px;
-  font-size:.68rem;font-weight:600;color:var(--text-2);
-  text-transform:uppercase;letter-spacing:.08em;
+  text-align:left;padding:11px 16px;
+  font-size:.62rem;font-weight:700;color:var(--text-3);
+  text-transform:uppercase;letter-spacing:.1em;
   border-bottom:1px solid var(--border);
-  white-space:nowrap;
+  white-space:nowrap;background:var(--bg-card-alt);
 }
-.grade-tbl td{padding:12px 14px;font-size:.85rem;border-bottom:1px solid rgba(37,40,54,.5);vertical-align:middle}
+.grade-tbl td{
+  padding:13px 16px;font-size:.835rem;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
 .grade-tbl tr:last-child td{border-bottom:none}
+.grade-tbl tbody tr{transition:background .15s}
 .grade-tbl tbody tr:hover td{background:var(--bg-card-alt)}
 .grade-tbl tbody tr:hover .g-del{opacity:1}
-.grade-pill{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:3px 8px;border-radius:6px;font-size:.82rem;font-weight:700;white-space:nowrap}
-.prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;min-width:70px}
-.prog-fill{height:100%;border-radius:3px;transition:width .4s ease}
-.g-del{background:none;border:none;color:var(--text-2);cursor:pointer;padding:4px 6px;font-size:.9rem;opacity:0;transition:all .2s}
+.grade-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:36px;padding:3px 9px;border-radius:5px;
+  font-size:.78rem;font-weight:700;white-space:nowrap;
+}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;min-width:80px}
+.prog-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.g-del{
+  background:none;border:none;color:var(--text-3);
+  cursor:pointer;padding:4px 6px;font-size:.85rem;
+  opacity:0;transition:all .18s;
+}
 .g-del:hover{color:var(--red)}
 
 /* ── Empty states ── */
-.empty{text-align:center;padding:48px 24px;color:var(--text-2)}
-.empty-icon{font-size:2.8rem;margin-bottom:10px}
-.empty-text{font-size:.875rem}
+.empty{text-align:center;padding:52px 24px;color:var(--text-3)}
+.empty-icon{font-size:2.2rem;margin-bottom:10px;opacity:.4}
+.empty-text{font-size:.82rem;letter-spacing:.02em}
 
 /* ── Toast ── */
 .toast-wrap{position:fixed;bottom:24px;right:24px;z-index:1000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{
-  background:var(--bg-card);border:1px solid var(--border);
-  border-radius:10px;padding:12px 16px;
-  font-size:.84rem;font-weight:500;
-  min-width:200px;max-width:290px;
-  display:flex;align-items:center;gap:10px;
-  box-shadow:0 8px 32px rgba(0,0,0,.45);
-  animation:tIn .3s ease;pointer-events:auto;
+  background:var(--bg-card-alt);border:1px solid var(--border-hover);
+  border-radius:var(--radius-sm);padding:11px 16px;
+  font-size:.8rem;font-weight:500;
+  min-width:190px;max-width:280px;
+  display:flex;align-items:center;gap:9px;
+  box-shadow:0 8px 40px rgba(0,0,0,.6);
+  animation:tIn .28s cubic-bezier(.34,1.56,.64,1);pointer-events:auto;
+  backdrop-filter:blur(12px);
 }
-.toast.s{border-left:3px solid var(--accent)}
-.toast.e{border-left:3px solid var(--red)}
-.toast.i{border-left:3px solid #4a90d9}
-.t-icon{font-size:1rem;flex-shrink:0}
-@keyframes tIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes tOut{from{transform:translateX(0);opacity:1}to{transform:translateX(110%);opacity:0}}
+.toast.s{border-left:2px solid var(--green)}
+.toast.e{border-left:2px solid var(--red)}
+.toast.i{border-left:2px solid var(--blue)}
+.t-icon{font-size:.9rem;flex-shrink:0;opacity:.7}
+@keyframes tIn{from{transform:translateX(110%) scale(.9);opacity:0}to{transform:translateX(0) scale(1);opacity:1}}
+@keyframes tOut{from{transform:translateX(0) scale(1);opacity:1}to{transform:translateX(110%) scale(.9);opacity:0}}
 
 /* ── Overlay ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99;backdrop-filter:blur(4px)}
 .overlay.open{display:block}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(--border);margin:22px 0}
 
 /* ── Responsive ── */
 @media(max-width:900px){
   .stat-grid{grid-template-columns:repeat(2,1fr)}
   .f4{grid-template-columns:1fr 1fr}
+  .content{padding:28px 28px}
 }
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}
@@ -316,8 +440,8 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
   .f2,.f3,.f4{grid-template-columns:1fr}
   .grade-summary{grid-template-columns:1fr 1fr}
   .del-btn,.task-del,.g-del{opacity:1!important}
-  .hero{padding:20px}
-  .hero-cd{font-size:1.6rem}
+  .hero{padding:22px}
+  .hero-cd{font-size:2rem}
 }
 @media(max-width:480px){
   .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -332,13 +456,15 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <h1>Study<span>Desk</span></h1>
-    <div class="tagline">Your academic command centre</div>
+    <h1>Study<em>Desk</em></h1>
+    <div class="tagline">Academic command centre</div>
   </div>
   <nav class="nav">
+    <div class="nav-section">Overview</div>
     <div class="nav-item active" data-sec="dashboard" onclick="navigate('dashboard')">
       <span class="nav-icon">⊞</span><span>Dashboard</span>
     </div>
+    <div class="nav-section">Study</div>
     <div class="nav-item" data-sec="exams" onclick="navigate('exams')">
       <span class="nav-icon">◷</span><span>Exam Countdowns</span>
     </div>
@@ -349,7 +475,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
       <span class="nav-icon">≋</span><span>Grade Tracker</span>
     </div>
   </nav>
-  <div class="sidebar-footer">StudyDesk &copy; 2024</div>
+  <div class="sidebar-footer">StudyDesk · 2025</div>
 </aside>
 
 <div class="main">
@@ -357,7 +483,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
     <button class="hamburger" onclick="openSidebar()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-    <span class="topbar-title">StudyDesk</span>
+    <span class="topbar-title">Study<em style="font-style:italic;color:var(--text-2)">Desk</em></span>
   </div>
 
   <div class="content">
@@ -379,7 +505,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
         <div class="stat-card">
           <div class="stat-icon">✅</div>
           <div class="stat-value" id="st-done">0</div>
-          <div class="stat-label">Completed Tasks</div>
+          <div class="stat-label">Completed</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">📊</div>
@@ -401,9 +527,9 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
 
     <!-- ── Exam Countdowns ── -->
     <section class="section" id="sec-exams">
-      <div class="sec-heading">Exam Countdowns</div>
+      <div class="sec-heading">Exam <em>Countdowns</em></div>
       <div class="form-card">
-        <div class="form-title">Add New Exam</div>
+        <div class="form-title">Add new exam</div>
         <div class="frow f2">
           <div class="fgroup">
             <label>Subject</label>
@@ -441,9 +567,9 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
 
     <!-- ── Tasks ── -->
     <section class="section" id="sec-tasks">
-      <div class="sec-heading">Tasks</div>
+      <div class="sec-heading">Task <em>List</em></div>
       <div class="form-card">
-        <div class="form-title">Add New Task</div>
+        <div class="form-title">Add new task</div>
         <div class="frow f2">
           <div class="fgroup">
             <label>Task Name</label>
@@ -486,7 +612,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
 
     <!-- ── Grade Tracker ── -->
     <section class="section" id="sec-grades">
-      <div class="sec-heading">Grade Tracker</div>
+      <div class="sec-heading">Grade <em>Tracker</em></div>
       <div class="tabs">
         <button class="tab-btn active" data-tab="GCSE" onclick="setTab(this)">GCSE</button>
         <button class="tab-btn" data-tab="IGCSE" onclick="setTab(this)">IGCSE</button>
@@ -494,8 +620,8 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
         <button class="tab-btn" data-tab="SAT" onclick="setTab(this)">SAT</button>
       </div>
       <div class="form-card">
-        <div class="form-title">Add Grade Entry</div>
-        <div class="frow f4">
+        <div class="form-title">Add grade entry</div>
+        <div class="frow f3" id="g-form-standard">
           <div class="fgroup">
             <label>Subject</label>
             <input type="text" id="g-subject" placeholder="e.g. Mathematics">
@@ -504,9 +630,23 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.5);cursor:poi
             <label>Paper / Test</label>
             <input type="text" id="g-paper" placeholder="e.g. Paper 1">
           </div>
+          <div class="fgroup" id="g-grade-field">
+            <label>Grade</label>
+            <input type="text" id="g-grade-direct" placeholder="e.g. 7">
+          </div>
+        </div>
+        <div class="frow f4" id="g-form-score" style="display:none">
+          <div class="fgroup">
+            <label>Subject</label>
+            <input type="text" id="g-subject2" placeholder="e.g. Mathematics">
+          </div>
+          <div class="fgroup">
+            <label>Paper / Test</label>
+            <input type="text" id="g-paper2" placeholder="e.g. Paper 1">
+          </div>
           <div class="fgroup">
             <label>Score</label>
-            <input type="number" id="g-score" placeholder="85" min="0">
+            <input type="number" id="g-score" placeholder="72" min="0">
           </div>
           <div class="fgroup">
             <label>Out of</label>
@@ -572,16 +712,16 @@ function closeSidebar() { document.getElementById('sidebar').classList.remove('o
 
 // ── Toast ──────────────────────────────────────────────────────────────────
 function toast(msg, type = 's') {
-  const icons = { s: '✓', e: '✕', i: 'ℹ' };
+  const icons = { s: '✓', e: '✕', i: 'i' };
   const el = document.createElement('div');
   el.className = `toast ${type}`;
   el.innerHTML = `<span class="t-icon">${icons[type]}</span><span>${msg}</span>`;
   document.getElementById('toasts').appendChild(el);
-  setTimeout(() => { el.style.animation = 'tOut .3s ease forwards'; setTimeout(() => el.remove(), 300); }, 3200);
+  setTimeout(() => { el.style.animation = 'tOut .28s cubic-bezier(.4,0,.2,1) forwards'; setTimeout(() => el.remove(), 280); }, 3000);
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-const QUAL_COLOR = { GCSE:'#4a90d9', IGCSE:'#9b6fd4', 'A-Level':'#e07a4a', SATs:'#e05252', Other:'#7a8a9a' };
+const QUAL_COLOR = { GCSE:'#60a5fa', IGCSE:'#a78bfa', 'A-Level':'#fb923c', SATs:'#f87171', Other:'#6b7280' };
 const PRI_ORDER  = { High: 0, Medium: 1, Low: 2 };
 
 function daysUntil(dateStr) {
@@ -592,7 +732,7 @@ function daysUntil(dateStr) {
 
 function fmtCountdown(days) {
   if (days < 0)  return { text: 'Past', cls: 'red' };
-  if (days === 0) return { text: 'Today!', cls: 'red' };
+  if (days === 0) return { text: 'Today', cls: 'red' };
   const w = Math.floor(days / 7), d = days % 7;
   let t = '';
   if (w) t += `${w}w `;
@@ -610,54 +750,54 @@ function greeting() {
   return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
 }
 
-// ── Grade Calculation ──────────────────────────────────────────────────────
+// ── Grade Calculation (updated GCSE boundaries) ────────────────────────────
 function calcGrade(qual, pct) {
   if (qual === 'GCSE') {
-    if (pct >= 89) return { g:'9',  c:'#4a9b6f' };
-    if (pct >= 80) return { g:'8',  c:'#5ab882' };
-    if (pct >= 70) return { g:'7',  c:'#6bc995' };
-    if (pct >= 60) return { g:'6',  c:'#c8a84b' };
-    if (pct >= 50) return { g:'5',  c:'#e0a552' };
-    if (pct >= 40) return { g:'4',  c:'#d47a4a' };
-    if (pct >= 30) return { g:'3',  c:'#e07a4a' };
-    if (pct >= 20) return { g:'2',  c:'#e06060' };
-    return { g:'1', c:'#e05252' };
+    // Updated boundaries: 9=89%+, 8=79%, 7=69%, 6=59%, 5=49%, 4=39%, 3=29%, 2=19%, 1=0%
+    if (pct >= 89) return { g:'9', c:'#34d399' };
+    if (pct >= 79) return { g:'8', c:'#6ee7b7' };
+    if (pct >= 69) return { g:'7', c:'#86efac' };
+    if (pct >= 59) return { g:'6', c:'#60a5fa' };
+    if (pct >= 49) return { g:'5', c:'#f59e0b' };
+    if (pct >= 39) return { g:'4', c:'#fb923c' };
+    if (pct >= 29) return { g:'3', c:'#f87171' };
+    if (pct >= 19) return { g:'2', c:'#ef4444' };
+    return { g:'1', c:'#dc2626' };
   }
   if (qual === 'IGCSE') {
-    if (pct >= 90) return { g:'A*', c:'#4a9b6f' };
-    if (pct >= 80) return { g:'A',  c:'#5ab882' };
-    if (pct >= 70) return { g:'B',  c:'#c8a84b' };
-    if (pct >= 60) return { g:'C',  c:'#e0a552' };
-    if (pct >= 50) return { g:'D',  c:'#d47a4a' };
-    if (pct >= 40) return { g:'E',  c:'#e07a4a' };
-    if (pct >= 30) return { g:'F',  c:'#e06060' };
-    if (pct >= 20) return { g:'G',  c:'#e05252' };
-    return { g:'U', c:'#7a8a9a' };
+    if (pct >= 90) return { g:'A*', c:'#34d399' };
+    if (pct >= 80) return { g:'A',  c:'#6ee7b7' };
+    if (pct >= 70) return { g:'B',  c:'#60a5fa' };
+    if (pct >= 60) return { g:'C',  c:'#f59e0b' };
+    if (pct >= 50) return { g:'D',  c:'#fb923c' };
+    if (pct >= 40) return { g:'E',  c:'#f87171' };
+    if (pct >= 30) return { g:'F',  c:'#ef4444' };
+    if (pct >= 20) return { g:'G',  c:'#dc2626' };
+    return { g:'U', c:'#6b7280' };
   }
   if (qual === 'A-Level') {
-    if (pct >= 90) return { g:'A*', c:'#4a9b6f' };
-    if (pct >= 80) return { g:'A',  c:'#5ab882' };
-    if (pct >= 70) return { g:'B',  c:'#c8a84b' };
-    if (pct >= 60) return { g:'C',  c:'#e0a552' };
-    if (pct >= 50) return { g:'D',  c:'#d47a4a' };
-    if (pct >= 40) return { g:'E',  c:'#e07a4a' };
-    return { g:'U', c:'#7a8a9a' };
+    if (pct >= 90) return { g:'A*', c:'#34d399' };
+    if (pct >= 80) return { g:'A',  c:'#6ee7b7' };
+    if (pct >= 70) return { g:'B',  c:'#60a5fa' };
+    if (pct >= 60) return { g:'C',  c:'#f59e0b' };
+    if (pct >= 50) return { g:'D',  c:'#fb923c' };
+    if (pct >= 40) return { g:'E',  c:'#f87171' };
+    return { g:'U', c:'#6b7280' };
   }
   if (qual === 'SAT') {
     const sc = Math.round(pct * 16);
-    if (sc >= 1500) return { g:'1500–1600', c:'#4a9b6f' };
-    if (sc >= 1400) return { g:'1400–1499', c:'#5ab882' };
-    if (sc >= 1200) return { g:'1200–1399', c:'#c8a84b' };
-    if (sc >= 1000) return { g:'1000–1199', c:'#e0a552' };
-    if (sc >=  800) return { g:'800–999',   c:'#e07a4a' };
-    return { g:'<800', c:'#e05252' };
+    if (sc >= 1500) return { g:'1500–1600', c:'#34d399' };
+    if (sc >= 1400) return { g:'1400–1499', c:'#6ee7b7' };
+    if (sc >= 1200) return { g:'1200–1399', c:'#60a5fa' };
+    if (sc >= 1000) return { g:'1000–1199', c:'#f59e0b' };
+    if (sc >=  800) return { g:'800–999',   c:'#fb923c' };
+    return { g:'<800', c:'#f87171' };
   }
-  return { g:'—', c:'#7a8a9a' };
+  return { g:'—', c:'#6b7280' };
 }
 
 // ── Dashboard ──────────────────────────────────────────────────────────────
 function renderDash() {
-  const today = new Date(); today.setHours(0,0,0,0);
   const future = exams.filter(e => daysUntil(e.date) >= 0).sort((a,b) => new Date(a.date)-new Date(b.date));
   const pending   = tasks.filter(t => !t.completed);
   const completed = tasks.filter(t =>  t.completed);
@@ -672,14 +812,14 @@ function renderDash() {
   if (future.length) {
     const nx = future[0];
     const { text, cls } = fmtCountdown(daysUntil(nx.date));
-    const cdColor = cls === 'green' ? '#4a9b6f' : cls === 'amber' ? '#e0a552' : '#e05252';
+    const cdColor = cls==='green'?'#34d399':cls==='amber'?'#f59e0b':'#ff6b6b';
     hero.innerHTML = `
-      <div class="hero-greeting">${greeting()} — here's what's coming up</div>
+      <div class="hero-greeting">${greeting()}</div>
       <div class="hero-title">Next Exam</div>
       <div class="hero-body">
         <div>
           <div class="hero-name">${esc(nx.subject)}</div>
-          <div class="hero-detail">${esc(nx.qualification)}${nx.board ? ' · ' + esc(nx.board) : ''}</div>
+          <div class="hero-detail">${esc(nx.qualification)}${nx.board?' · '+esc(nx.board):''}</div>
           <div class="hero-detail">${fmtDate(nx.date)}</div>
         </div>
         <div style="text-align:right">
@@ -691,7 +831,7 @@ function renderDash() {
     hero.innerHTML = `
       <div class="hero-greeting">${greeting()}</div>
       <div class="hero-title">Welcome to StudyDesk</div>
-      <div class="hero-empty">No upcoming exams — add some in Exam Countdowns!</div>`;
+      <div class="hero-empty">No upcoming exams — add some in Exam Countdowns.</div>`;
   }
 
   // Mini exams
@@ -701,8 +841,8 @@ function renderDash() {
   } else {
     dEl.innerHTML = future.slice(0,5).map(e => {
       const { text, cls } = fmtCountdown(daysUntil(e.date));
-      const cdC = cls==='green'?'#4a9b6f':cls==='amber'?'#e0a552':'#e05252';
-      const bg  = cls==='green'?'rgba(74,155,111,.15)':cls==='amber'?'rgba(224,165,82,.15)':'rgba(224,82,82,.15)';
+      const cdC = cls==='green'?'#34d399':cls==='amber'?'#f59e0b':'#ff6b6b';
+      const bg  = cls==='green'?'rgba(52,211,153,.1)':cls==='amber'?'rgba(245,158,11,.1)':'rgba(255,107,107,.1)';
       return `<li class="mini-item">
         <div class="mini-left"><div class="mini-name">${esc(e.subject)}</div><div class="mini-sub">${esc(e.qualification)}${e.board?' · '+esc(e.board):''}</div></div>
         <span class="mini-badge" style="background:${bg};color:${cdC}">${text}</span>
@@ -716,11 +856,11 @@ function renderDash() {
   if (!sorted.length) {
     tEl.innerHTML = '<li class="mini-empty">No pending tasks</li>';
   } else {
-    const pC = { High:'#e05252', Medium:'#e0a552', Low:'#4a9b6f' };
+    const pC = { High:'#ff6b6b', Medium:'#f59e0b', Low:'#34d399' };
     tEl.innerHTML = sorted.slice(0,5).map(t => `
       <li class="mini-item">
         <div class="mini-left"><div class="mini-name">${esc(t.name)}</div><div class="mini-sub">${t.subject?esc(t.subject):''}${t.dueDate?' · Due '+fmtDate(t.dueDate):''}</div></div>
-        <span class="mini-badge" style="background:${pC[t.priority]}22;color:${pC[t.priority]}">${t.priority}</span>
+        <span class="mini-badge" style="background:${pC[t.priority]}18;color:${pC[t.priority]}">${t.priority}</span>
       </li>`).join('');
   }
 }
@@ -739,7 +879,7 @@ function addExam() {
   document.getElementById('e-board').value   = '';
   document.getElementById('e-date').value    = '';
   renderExams();
-  toast(`${subject} exam added!`);
+  toast(`${subject} added`);
 }
 
 function deleteExam(id) {
@@ -757,12 +897,12 @@ function renderExams() {
   empty.style.display = 'none';
   grid.innerHTML = sorted.map(e => {
     const { text, cls } = fmtCountdown(daysUntil(e.date));
-    const col = QUAL_COLOR[e.qualification] || '#7a8a9a';
+    const col = QUAL_COLOR[e.qualification] || '#6b7280';
     return `<div class="exam-card">
       <div class="exam-stripe" style="background:${col}"></div>
       <div class="exam-body">
-        <button class="del-btn" onclick="deleteExam(${e.id})">Delete</button>
-        <div class="qual-badge" style="background:${col}22;color:${col}">${esc(e.qualification)}</div>
+        <button class="del-btn" onclick="deleteExam(${e.id})">Remove</button>
+        <div class="qual-badge" style="background:${col}18;color:${col}">${esc(e.qualification)}</div>
         <div class="exam-subject">${esc(e.subject)}</div>
         <div class="exam-board">${esc(e.board)}</div>
         <div class="exam-date-str">${fmtDate(e.date)}</div>
@@ -786,7 +926,7 @@ function addTask() {
   document.getElementById('t-subject').value = '';
   document.getElementById('t-due').value     = '';
   renderTasks();
-  toast(`"${name}" added!`);
+  toast(`"${name}" added`);
 }
 
 function toggleTask(id) {
@@ -795,7 +935,7 @@ function toggleTask(id) {
   t.completed = !t.completed;
   save('sd_tasks', tasks);
   renderTasks();
-  toast(t.completed ? 'Task completed!' : 'Task reopened', t.completed ? 's' : 'i');
+  toast(t.completed ? 'Done!' : 'Reopened', t.completed ? 's' : 'i');
 }
 
 function cyclePri(id) {
@@ -845,7 +985,7 @@ function renderTasks() {
         <div class="task-name">${esc(t.name)}</div>
         <div class="task-meta">
           ${t.subject ? `<span class="task-subj">${esc(t.subject)}</span>` : ''}
-          <span class="pri-badge ${t.priority}" onclick="cyclePri(${t.id})" title="Click to cycle priority">${t.priority}</span>
+          <span class="pri-badge ${t.priority}" onclick="cyclePri(${t.id})" title="Click to cycle">${t.priority}</span>
           ${t.dueDate ? `<span class="task-due${ov?' overdue':''}">Due ${fmtDate(t.dueDate)}${ov?' · Overdue':''}</span>` : ''}
         </div>
       </div>
@@ -859,28 +999,49 @@ function setTab(el) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   gradeTab = el.dataset.tab;
+  const isGCSE = gradeTab === 'GCSE';
+  document.getElementById('g-form-standard').style.display = isGCSE ? 'grid' : 'none';
+  document.getElementById('g-form-score').style.display    = isGCSE ? 'none' : 'grid';
   renderGrades();
 }
 
 function addGrade() {
-  const subject = document.getElementById('g-subject').value.trim();
-  const paper   = document.getElementById('g-paper').value.trim();
+  if (gradeTab === 'GCSE') {
+    const subject = document.getElementById('g-subject').value.trim();
+    const paper   = document.getElementById('g-paper').value.trim();
+    const gradeRaw = document.getElementById('g-grade-direct').value.trim();
+    if (!subject) { toast('Enter a subject', 'e'); return; }
+    const validGCSE = ['1','2','3','4','5','6','7','8','9'];
+    if (!validGCSE.includes(gradeRaw)) { toast('Enter a grade 1–9', 'e'); return; }
+    const gradeNum = parseInt(gradeRaw);
+    const gradeColors = {'9':'#34d399','8':'#6ee7b7','7':'#86efac','6':'#60a5fa','5':'#f59e0b','4':'#fb923c','3':'#f87171','2':'#ef4444','1':'#dc2626'};
+    grades.push({ id: Date.now(), qualification: 'GCSE', subject, paper, grade: gradeRaw, gradeColor: gradeColors[gradeRaw], pct: null, score: null, outOf: null });
+    save('sd_grades', grades);
+    document.getElementById('g-subject').value = '';
+    document.getElementById('g-paper').value   = '';
+    document.getElementById('g-grade-direct').value = '';
+    renderGrades();
+    toast(`${subject} — Grade ${gradeRaw}`);
+    return;
+  }
+  const subject = document.getElementById('g-subject2').value.trim();
+  const paper   = document.getElementById('g-paper2').value.trim();
   const score   = parseFloat(document.getElementById('g-score').value);
   const outOf   = parseFloat(document.getElementById('g-outof').value);
   if (!subject)           { toast('Enter a subject', 'e'); return; }
-  if (isNaN(score) || isNaN(outOf)) { toast('Enter valid score values', 'e'); return; }
+  if (isNaN(score) || isNaN(outOf)) { toast('Enter valid scores', 'e'); return; }
   if (outOf <= 0)         { toast('Out-of must be > 0', 'e'); return; }
   if (score < 0 || score > outOf) { toast('Score must be 0 – out-of', 'e'); return; }
   const pct = (score / outOf) * 100;
   const { g, c } = calcGrade(gradeTab, pct);
   grades.push({ id: Date.now(), qualification: gradeTab, subject, paper, score, outOf, pct, grade: g, gradeColor: c });
   save('sd_grades', grades);
-  document.getElementById('g-subject').value = '';
-  document.getElementById('g-paper').value   = '';
+  document.getElementById('g-subject2').value = '';
+  document.getElementById('g-paper2').value   = '';
   document.getElementById('g-score').value   = '';
   document.getElementById('g-outof').value   = '';
   renderGrades();
-  toast(`${subject} — ${g} added!`);
+  toast(`${subject} — Grade ${g}`);
 }
 
 function deleteGrade(id) {
@@ -897,13 +1058,25 @@ function renderGrades() {
   const sumEl = document.getElementById('g-summary');
 
   if (tg.length) {
-    const avg = tg.reduce((s,g) => s + g.pct, 0) / tg.length;
-    const { g: ag, c: ac } = calcGrade(gradeTab, avg);
-    sumEl.style.display = 'grid';
-    sumEl.innerHTML = `
-      <div class="sum-card"><div class="sum-val">${avg.toFixed(1)}%</div><div class="sum-label">Average Score</div></div>
-      <div class="sum-card"><div class="sum-val" style="color:${ac}">${ag}</div><div class="sum-label">Average Grade</div></div>
-      <div class="sum-card"><div class="sum-val">${tg.length}</div><div class="sum-label">Entries Tracked</div></div>`;
+    if (gradeTab === 'GCSE') {
+      const avg = tg.reduce((s,g) => s + parseInt(g.grade), 0) / tg.length;
+      const avgRounded = Math.round(avg).toString();
+      const gradeColors = {'9':'#34d399','8':'#6ee7b7','7':'#86efac','6':'#60a5fa','5':'#f59e0b','4':'#fb923c','3':'#f87171','2':'#ef4444','1':'#dc2626'};
+      const ac = gradeColors[avgRounded] || '#6b7280';
+      sumEl.style.display = 'grid';
+      sumEl.innerHTML = `
+        <div class="sum-card"><div class="sum-val">${avg.toFixed(1)}</div><div class="sum-label">Average Grade</div></div>
+        <div class="sum-card"><div class="sum-val" style="color:${ac}">${avgRounded}</div><div class="sum-label">Rounded Grade</div></div>
+        <div class="sum-card"><div class="sum-val">${tg.length}</div><div class="sum-label">Entries</div></div>`;
+    } else {
+      const avg = tg.reduce((s,g) => s + g.pct, 0) / tg.length;
+      const { g: ag, c: ac } = calcGrade(gradeTab, avg);
+      sumEl.style.display = 'grid';
+      sumEl.innerHTML = `
+        <div class="sum-card"><div class="sum-val">${avg.toFixed(1)}%</div><div class="sum-label">Average Score</div></div>
+        <div class="sum-card"><div class="sum-val" style="color:${ac}">${ag}</div><div class="sum-label">Average Grade</div></div>
+        <div class="sum-card"><div class="sum-val">${tg.length}</div><div class="sum-label">Entries</div></div>`;
+    }
   } else {
     sumEl.style.display = 'none';
   }
@@ -912,16 +1085,18 @@ function renderGrades() {
   empty.style.display = 'none';
 
   tbody.innerHTML = tg.map(g => {
-    const pct = g.pct.toFixed(1);
-    const scoreStr = gradeTab === 'SAT'
-      ? `${g.score} / ${g.outOf}`
-      : `${g.score} / ${g.outOf} <span style="color:var(--text-2);font-size:.78rem">(${pct}%)</span>`;
+    const scoreCell = gradeTab === 'GCSE'
+      ? `—`
+      : g.pct != null ? `${g.score} / ${g.outOf} <span style="color:var(--text-3);font-size:.76rem">(${g.pct.toFixed(1)}%)</span>` : '—';
+    const progCell = gradeTab === 'GCSE'
+      ? `<div class="prog-bar"><div class="prog-fill" style="width:${(parseInt(g.grade)/9*100).toFixed(0)}%;background:${g.gradeColor}"></div></div>`
+      : g.pct != null ? `<div class="prog-bar"><div class="prog-fill" style="width:${g.pct.toFixed(1)}%;background:${g.gradeColor}"></div></div>` : '';
     return `<tr>
       <td style="font-weight:500">${esc(g.subject)}</td>
       <td style="color:var(--text-2)">${esc(g.paper) || '—'}</td>
-      <td>${scoreStr}</td>
-      <td><span class="grade-pill" style="background:${g.gradeColor}22;color:${g.gradeColor}">${g.grade}</span></td>
-      <td><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${g.gradeColor}"></div></div></td>
+      <td>${scoreCell}</td>
+      <td><span class="grade-pill" style="background:${g.gradeColor}18;color:${g.gradeColor}">${g.grade}</span></td>
+      <td>${progCell}</td>
       <td><button class="g-del" onclick="deleteGrade(${g.id})" title="Delete">✕</button></td>
     </tr>`;
   }).join('');
@@ -937,18 +1112,11 @@ function esc(s) {
 function onEnter(id, fn) {
   document.getElementById(id).addEventListener('keydown', e => { if (e.key==='Enter') fn(); });
 }
-onEnter('e-subject', addExam);
-onEnter('e-board',   addExam);
-onEnter('e-date',    addExam);
-onEnter('t-name',    addTask);
-onEnter('t-subject', addTask);
-onEnter('t-due',     addTask);
-onEnter('g-subject', addGrade);
-onEnter('g-paper',   addGrade);
-onEnter('g-score',   addGrade);
-onEnter('g-outof',   addGrade);
+onEnter('e-subject', addExam); onEnter('e-board', addExam); onEnter('e-date', addExam);
+onEnter('t-name', addTask); onEnter('t-subject', addTask); onEnter('t-due', addTask);
+onEnter('g-subject', addGrade); onEnter('g-paper', addGrade); onEnter('g-score', addGrade); onEnter('g-outof', addGrade);
 
-// ── Countdown refresh every minute ────────────────────────────────────────
+// ── Countdown refresh ─────────────────────────────────────────────────────
 setInterval(() => {
   if (curSec === 'exams')     renderExams();
   if (curSec === 'dashboard') renderDash();
